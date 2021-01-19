@@ -8,5 +8,8 @@
 </head>
 <body>
 	<h4> Sucess Page</h4>
+	time: ${requestScope.time }
+	<br>
+	user:${requestScope.user}
 </body>
 </html>
