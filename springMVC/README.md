@@ -30,23 +30,24 @@
 	 * defaultValue 请求参数的默认值
 	 ```
 * @RequestHeader
-
+	```
 	@RequestMapping("/testRequestHeader")
 	public String testRequestHeader(@RequestHeader(value="Accept-Language") String acceptLanguage) {
 		System.out.println("[test RequestHeader]: Accept-Language="+acceptLanguage);
 		return SUCCESS;
 	}
+	```
 * @CookieValue 
-
+	```
 	//映射一个Cookie值，属性同@RequestParam一样，有value、defaultValue、required
 	@RequestMapping("/testCookieValue")
 	public String testCookieValue(@CookieValue(value="JSESSIONID")String sessionId) {
 		System.out.println("[Test CookieValue]: JSESSIONID="+sessionId);
 		return SUCCESS;
 	}
-	
+	```
 * 使用POJO对象绑定请求参数
-
+	```
 	 * Spring MVC 会按请求参数名和POJO 属性名进行自动匹配，自动为该对象填充属性值。
 	 * 支持级联属性。如address.city, address.province 等
 	 @RequestMapping("/testPojo")
@@ -54,9 +55,9 @@
 		System.out.println("[Test Pojo object as paramenter]: "+user);
 		return SUCCESS;
 	 }
-	 
+	 ```
 * 使用Servlet原生的API作为目标方法的参数
-	
+	```
 	 * 具体支持以下类型
 	 * 	HttpServletRequest, HttpServletResponse
 	 * 	HttpSession
@@ -69,8 +70,9 @@
 		System.out.println("[Test ServletApi as Parameters]: HttpServletRequest="+req+"; HttpServletResponse="+res);
 		return SUCCESS;
 	 }
+	 ```
 * 处理模型数据之 ModelAndView
-
+	```
 	 * 目标方法的返回值可以是ModelAndView类型。
 	 * 其中可以包含视图和模型信息
 	 * SpringMVC 会把ModelAndView的model中的数据放入到request scope object 中
@@ -81,11 +83,13 @@
 		model.addObject("time", new Date());
 		return model;
 	 }
+	 ```
 * 处理模型数据之Map
-	
+	```
 	//目标方法可以添加Map类型（实际上也可以是Model 类型或ModelMap 类型）的参数
 	@RequestMapping("/testMap")
 	public String testMap(Map<String, Object> map) {
 		map.put("user", new User("root", "admin","F",18,null));
 		return SUCCESS;
 	}
+	```
