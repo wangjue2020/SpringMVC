@@ -6,6 +6,15 @@ public class User {
 	private String gender;
 	private int age;
 	private Address address;
+	private int id;
+	public User(String username, String password, String gender, int age, int id) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.gender = gender;
+		this.age = age;
+		this.id = id;
+	}
 	public User() {
 		super();
 	}
@@ -19,8 +28,8 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", gender=" + gender + ", age=" + age
-				+ ", address=" + address + "]";
+		return "User [id="+id+", username=" + username + ", password=" + password + ", gender=" + gender + ", age=" + age
+				+ "]";
 	}
 	public String getUsername() {
 		return username;
@@ -51,5 +60,11 @@ public class User {
 	}
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }

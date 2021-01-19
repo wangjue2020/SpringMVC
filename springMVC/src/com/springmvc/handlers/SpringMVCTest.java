@@ -8,20 +8,78 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.entity.User;
 
+//@SessionAttributes(value= {"user"}, types= {String.class})
 @RequestMapping("/springmvc")
 @Controller
 public class SpringMVCTest {
 	private static final String SUCCESS="success";
+	/**
+	 * 有@ModelAttribute  标记的方法，会在每个目标方法执行之前被SpringMVC调用
+	 * @param id
+	 * @param map
+	 */
+	@ModelAttribute
+	public void getUser(@RequestParam(value="id" ,required=false) Integer id, Map<String, Object> map) {
+		if(id != null) {
+			User user = new User("admin", "12345", "Female", 18, 1);
+			System.out.println("[DATABASE] "+user);
+			map.put("abc", user);
+		}
+	}
+	/**
+	 * 运行流程：
+	 * 1、执行@ModelAttribute 注解修饰的方法：从数据库中取出对象，把对象放入到了Map中。key为user
+	 * 2、SpringMVC从Map中取出User对象，并把表单的请求参数赋给该User 对象的对应属性。
+	 * 3、SpringMVC把上述对象传入目标方法的参数
+	 * 
+	 * Spring MVC确定目标方法POJO类型入参的过程
+	 * 1、确定一个key：
+	 * 		-- 若目标方法的POJO类型的参数木有使用@ModelAttribute作为修饰，则key为POJO类名第一个字母的小写
+	 * 		-- 若使用@ModelAttributes来修饰，则key为@ModelAttributes注解的value属性值。
+	 * 2、在implicitModel中查找key对应的对象，若存在，则作为入参传入
+	 * 3、若implicitModel中不存在key对应的对象，则检查当前的Handler是否使用@SessionAttributes注解修饰，
+	 * 若使用了该注解，且@SessionAttributes注解的value属性值中包含了key，则会从HttpSession中来获取key所对应的value值，若存在则直接传入到目标方法的入参中，若不存在则将跑出异常
+	 * 4、若Handler没有表示@SessionAttributes注解或@SessionAttributes注解的value值中不包含key，则会通过反射来创建POJO类型的参数，传入为目标方法的参数
+	 * 5、SpringMVC会把key和value 保存到implicitModel中，今儿会保存到request中。
+	 * 
+	 * @param user
+	 * @return
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping("/testModelAttribute")
+	public String teestModelAttribute(@ModelAttribute(value="abc")User user) {
+		System.out.println("[VIEW] "+user);
+		return SUCCESS;
+	}
+	/**
+	 * @SessionAttributes 除了可以通过属性名指定需要放到session 中的属性外（实际上使用的是value属性值），
+	 * 还可以通过模型属性的对象类型指定那些模型属于需要放到会话中（实际上使用的是types属性值）
+	 * @SessionAttributes(value= {"user"}, types= {String.class}) 即表示将map中的key=“user”的key-value pair 加到 sessionScope
+	 * 同时也将value的type为String.class 的key-value pair 加到sessionScope中
+	 * 这个注解放在类的上面，而不能放在方法上面，这样这个类中的方法都会共用一个session scope
+	 * 
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/testSessionAttributes")
+	public String testSessionAttributes(Map<String, Object> map) {
+		map.put("user", new User("root", "admin","F",18,null));
+		map.put("school", "university of Toronto");
+		return SUCCESS;
+	}
 	/**
 	 * 目标方法可以添加Map类型（实际上也可以是Model 类型或ModelMap 类型）的参数
 	 * @param map

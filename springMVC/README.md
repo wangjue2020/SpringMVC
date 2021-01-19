@@ -93,3 +93,23 @@
 		return SUCCESS;
 	}
 	```
+* @SessionAttributes(value={...}, types={...})
+	```
+	 * 这个注解放在类的上面，而不能放在方法上面，这样这个类中的方法都会共用一个session scope
+	* @SessionAttributes 除了可以通过属性名指定需要放到session 中的属性外（实际上使用的是value属性值），
+	 * 还可以通过模型属性的对象类型指定那些模型属于需要放到会话中（实际上使用的是types属性值）
+	 * @SessionAttributes(value= {"user"}, types= {String.class}) 即表示将map中的key=“user”的key-value pair 加到 sessionScope
+	 * 同时也将value的type为String.class 的key-value pair 加到sessionScope中  
+	 @SessionAttributes(value= {"user"}, types= {String.class})
+	 @RequestMapping("/springmvc")
+	 @Controller
+	  public class SpringMVCTest {
+		private static final String SUCCESS="success";
+		@RequestMapping("/testSessionAttributes")
+	 	public String testSessionAttributes(Map<String, Object> map) {
+			map.put("user", new User("root", "admin","F",18,null));
+			map.put("school", "university of Toronto");
+			return SUCCESS;
+		 }
+	  }
+	```
