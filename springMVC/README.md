@@ -1,12 +1,12 @@
 * @RequestMapping
-
+	```
 	 * 1、@RequestMapping 除了修饰方法，还可以修饰类
 	 * 2、修饰类：提供初步的请求映射信息。相对于WEB应用的根目录
 	 * 3、修饰方法：提供进一步的细分映射信息。相对于类定义处的URL。 
 	 * 		若类定义处未标注@RequestMapping， 则方法出标记的URL相对于WEB应用的根目录
-	
+	```
 * REST & HiddenHttpMethodFilter  
-
+	```
 	 * Rest 风格的URL
 	 * 以CRUD为例：				以前不用rest风格的时候
 	 * 新增： /order POST				
@@ -21,14 +21,14 @@
 	 *  
 	 * 在SpringMVC的目标方法中如何得到id呢？
 	 * 	--使用@PathVariable 注解
-	 
+	 ```
 * @RequestParam
-
+	```
 	 * @RequestParam 来映射请求参数
 	 * value 值即请求参数的参数名
 	 * required 表示该参数是否必须提供， 默认为true
 	 * defaultValue 请求参数的默认值
-	 
+	 ```
 * @RequestHeader
 
 	@RequestMapping("/testRequestHeader")
